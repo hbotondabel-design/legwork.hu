@@ -119,7 +119,7 @@
       <article class="cell cell-auto reveal" data-d="1">
         <h3>Az ismétlődő munka gépre</h3>
         <p>Ha valaki hetente ugyanazt másolja számlákból táblázatba, azt sokszor rá lehet bízni egy kis programra. Önnek csak az eredményt kell átnéznie.</p>
-        <table class="mini-table">
+        <table class="mini-table" data-anim="tabla">
           <caption>Példa, kitalált adatokkal: beérkező számlák → táblázat</caption>
           <thead><tr><th>Szállító</th><th class="hide-s">Dátum</th><th>Telephely</th><th class="num">Összeg</th></tr></thead>
           <tbody>
@@ -132,7 +132,7 @@
       <article class="cell cell-maps reveal" data-d="2">
         <h3>Rendben lévő Google-adatlap</h3>
         <p>Sokan előbb a térképen találják meg, mint a weboldalán. Az adatlapot is rendbe teszem.</p>
-        <ul class="checks">
+        <ul class="checks" data-anim="pipak">
           <li>Pontos cím és telefon</li>
           <li>Nyitvatartás, ünnepnapokkal</li>
           <li>Friss fotók</li>
@@ -147,7 +147,7 @@
   <div class="wrap">
     <blockquote class="reveal">Egy szerbiai közvilágítás-üzemeltetőnek a havi villanyszámlák feldolgozását automatizáltam. <span>Ahol valami szokatlan, a program nem tippel, hanem szól.</span></blockquote>
     <div class="stats">
-      <div class="stat reveal"><b>kb. 40</b><span>község számlái</span></div>
+      <div class="stat reveal"><b>kb. <span data-count="40">40</span></b><span>község számlái</span></div>
       <div class="stat reveal" data-d="1"><b>több ezer</b><span>mérőhely havonta</span></div>
       <div class="stat reveal" data-d="2"><b>fillérre</b><span>egyezett a kézzel vezetett táblákkal, ahol volt mihez mérni</span></div>
     </div>
@@ -156,18 +156,22 @@
 
 <section class="about" id="rolam">
   <div class="wrap">
-    <div class="mono reveal" aria-hidden="true">HÁ</div>
     <div>
       <h2 class="reveal">Velem beszél, nem egy ügyfélszolgálattal.</h2>
       <p class="lead reveal" data-d="1">Horváth Ábel vagyok. Egyedül dolgozom: aki a levelére válaszol, az építi meg az oldalát, és az is tartja karban.</p>
     </div>
+    <ul class="facts">
+      <li class="reveal"><b>Egy kapcsolattartó</b><span>Mindig ugyanaz az ember válaszol.</span></li>
+      <li class="reveal" data-d="1"><b>Írásos ajánlat</b><span>Ár, határidő és tartalom előre, írásban.</span></li>
+      <li class="reveal" data-d="2"><b>Magyarul és angolul</b><span>Mindkét nyelven dolgozom.</span></li>
+    </ul>
   </div>
 </section>
 
 <section class="process" id="menete">
   <div class="wrap">
     <h2 class="reveal">Így dolgozunk együtt.</h2>
-    <ol class="steps">
+    <ol class="steps" data-anim="lepesek">
       <li class="reveal"><h3>Megnézem</h3><p>Hogyan találják meg most a neten, és mi hiányzik.</p></li>
       <li class="reveal" data-d="1"><h3>Megmutatom</h3><p>Három mintaoldalt küldök, vagy leírom, mit bíznék gépre.</p><span class="free">Díjtalan</span></li>
       <li class="reveal" data-d="2"><h3>Elkészítem</h3><p>Ha tetszik, befejezem a választott változatot, és élesítem.</p></li>

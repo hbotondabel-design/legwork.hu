@@ -92,6 +92,8 @@ section { scroll-margin-top: 80px; }
   border-bottom: 1px solid color-mix(in oklab, var(--line) 70%, transparent);
 }
 @media (prefers-reduced-transparency: reduce) { .nav { background: var(--bg); backdrop-filter: none; } }
+.nav { transition: box-shadow .3s var(--ease), border-color .3s var(--ease); }
+.nav.lent { box-shadow: 0 6px 24px -18px rgb(20 22 26 / .35); }
 .nav .wrap { display: flex; align-items: center; height: 66px; gap: 28px; }
 .logo { font-weight: 800; font-size: 22px; letter-spacing: -0.045em; text-decoration: none; display: inline-flex; align-items: baseline; }
 .logo i { font-style: normal; color: var(--accent); }
@@ -202,14 +204,15 @@ section { scroll-margin-top: 80px; }
 @media (max-width: 767px) { .proof { padding: 80px 0; } .stats { grid-template-columns: 1fr; gap: 26px; } }
 
 /* About */
-.about { padding: 96px 0; border-top: 1px solid var(--line); }
-.about .wrap { display: grid; grid-template-columns: auto 1fr; gap: 40px; align-items: center; }
-.about .lead { margin-top: 16px; }
-.mono {
-  width: 128px; height: 128px; border-radius: 999px; display: grid; place-items: center;
-  background: var(--accent); color: var(--accent-ink); font-weight: 800; font-size: 40px; letter-spacing: -0.04em;
-}
-@media (max-width: 767px) { .about { padding: 72px 0; } .about .wrap { grid-template-columns: 1fr; gap: 24px; } .mono { width: 84px; height: 84px; font-size: 28px; } }
+.about { padding: 104px 0; border-top: 1px solid var(--line); }
+.about .wrap { display: grid; grid-template-columns: 1.1fr 1fr; gap: 64px; align-items: start; }
+.about .lead { margin-top: 18px; }
+.facts { list-style: none; padding: 0; margin: 0; display: grid; gap: 0; }
+.facts li { display: grid; gap: 4px; padding: 20px 0; border-top: 1px solid var(--line); }
+.facts li:last-child { border-bottom: 1px solid var(--line); }
+.facts b { font-size: 18px; letter-spacing: -0.01em; }
+.facts span { color: var(--muted); font-size: 15.5px; }
+@media (max-width: 899px) { .about { padding: 72px 0; } .about .wrap { grid-template-columns: 1fr; gap: 32px; } }
 
 /* Process */
 .process { padding: 104px 0; background: var(--surface); border-block: 1px solid var(--line); }
@@ -221,6 +224,7 @@ section { scroll-margin-top: 80px; }
   font: 700 12px/1 var(--mono); background: var(--surface); border: 2px solid var(--line); color: var(--muted);
 }
 .steps li:first-child { border-top-color: var(--accent); }
+@media (prefers-reduced-motion: reduce) { .steps li::after { display: none; } }
 .steps li:first-child::before { border-color: var(--accent); color: var(--accent); }
 .steps p { color: var(--muted); margin-top: 10px; font-size: 16px; }
 .steps .free { display: inline-block; margin-top: 12px; font-size: 13px; font-weight: 600; color: var(--accent); }
@@ -299,5 +303,59 @@ section { scroll-margin-top: 80px; }
   .stage .frame { animation: rise 1s var(--ease) .15s both; }
   .stage .phone { animation: rise 1s var(--ease) .35s both; }
   @keyframes rise { from { opacity: 0; transform: translateY(26px); } to { opacity: 1; transform: none; } }
+}
+
+/* Motion v2 (2026-10-20): mindegyik mutat valamit — sorrend, folyamat, állapotváltás */
+.hero h1 .szo { display: inline-block; }
+@media (prefers-reduced-motion: no-preference) {
+  .js .hero h1 .szo { opacity: 0; transform: translateY(.45em); animation: szoBe .7s var(--ease) both; animation-delay: calc(80ms + var(--i) * 70ms); }
+  @keyframes szoBe { to { opacity: 1; transform: none; } }
+
+  /* Táblázat: a sorok úgy töltődnek be, mintha a program most írná őket; a gyanús sor a végén jelez */
+  .js [data-anim="tabla"] tbody tr { opacity: 0; transform: translateX(-8px); }
+  .js [data-anim="tabla"].fut tbody tr { animation: sorBe .5s var(--ease) both; }
+  .js [data-anim="tabla"].fut tbody tr:nth-child(1) { animation-delay: .15s; }
+  .js [data-anim="tabla"].fut tbody tr:nth-child(2) { animation-delay: .55s; }
+  .js [data-anim="tabla"].fut tbody tr:nth-child(3) { animation-delay: .95s, 1.5s; animation-name: sorBe, jelez; animation-duration: .5s, 1.2s; }
+  @keyframes sorBe { to { opacity: 1; transform: none; } }
+  @keyframes jelez { 0%, 100% { background: transparent; } 35% { background: color-mix(in oklab, var(--accent) 14%, transparent); } }
+  .js [data-anim="tabla"] caption::after { content: ""; display: inline-block; width: .5em; height: 1em; margin-left: 4px;
+    vertical-align: -2px; background: var(--accent); opacity: 0; }
+  .js [data-anim="tabla"].fut caption::after { animation: kurzor 1s steps(2) 3 .1s; }
+  @keyframes kurzor { 0% { opacity: 1; } 100% { opacity: 0; } }
+
+  /* Pipák: egymás után kerülnek a helyükre */
+  .js [data-anim="pipak"] li::before { display: inline-block; transform: scale(0); }
+  .js [data-anim="pipak"].fut li::before { animation: pipa .45s cubic-bezier(.34, 1.56, .64, 1) both; }
+  .js [data-anim="pipak"].fut li:nth-child(1)::before { animation-delay: .2s; }
+  .js [data-anim="pipak"].fut li:nth-child(2)::before { animation-delay: .45s; }
+  .js [data-anim="pipak"].fut li:nth-child(3)::before { animation-delay: .7s; }
+  .js [data-anim="pipak"].fut li:nth-child(4)::before { animation-delay: .95s; }
+  @keyframes pipa { to { transform: scale(1); } }
+
+  /* Folyamat: a vonal végigfut a lépéseken */
+  .steps li { border-top-color: var(--line) !important; }
+  .steps li::after { content: ""; position: absolute; top: -2px; left: 0; right: 0; height: 2px; background: var(--accent);
+    transform: scaleX(0); transform-origin: left; }
+  .js [data-anim="lepesek"].fut li::after { animation: vonal .6s var(--ease) both; }
+  .js [data-anim="lepesek"].fut li:nth-child(1)::after { animation-delay: .1s; }
+  .js [data-anim="lepesek"].fut li:nth-child(2)::after { animation-delay: .5s; }
+  .js [data-anim="lepesek"].fut li:nth-child(3)::after { animation-delay: .9s; }
+  .js [data-anim="lepesek"].fut li:nth-child(4)::after { animation-delay: 1.3s; }
+  @keyframes vonal { to { transform: scaleX(1); } }
+
+  /* Bento: finom emelkedés rámutatáskor */
+  .cell { transition: transform .35s var(--ease), box-shadow .35s var(--ease); }
+  .cell:hover { transform: translateY(-3px); box-shadow: var(--shadow); }
+  .sample-view.swap img { opacity: .15; transform: scale(.99); }
+  .sample-view img { transition: opacity .35s var(--ease), transform .35s var(--ease); }
+}
+/* Mélység: görgetéskor a telefon kicsit más ütemben mozog, mint a böngészőkép (csak ahol a böngésző tudja) */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .stage .phone { animation: rise 1s var(--ease) .35s both, melyseg linear both;
+      animation-timeline: auto, view(); animation-range: normal, cover 0% cover 100%; }
+    @keyframes melyseg { from { translate: 0 22px; } to { translate: 0 -22px; } }
+  }
 }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }

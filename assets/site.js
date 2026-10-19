@@ -1,5 +1,65 @@
 document.documentElement.classList.add("js");
 
+// Motion v2 (2026-10-20). Csökkentett mozgásnál semmi nem animál (a CSS is kikapcsol).
+const csendes = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+// Főcím: szavanként úszik be (a szöveg olvasható marad, a <em> kiemelés megmarad).
+(() => {
+  const h1 = document.querySelector(".hero h1");
+  if (!h1 || csendes) return;
+  h1.classList.remove("reveal");
+  let i = 0;
+  const bont = (el) => {
+    [...el.childNodes].forEach(n => {
+      if (n.nodeType === 3) {
+        const frag = document.createDocumentFragment();
+        n.textContent.split(/(\s+)/).forEach(t => {
+          if (!t) return;
+          if (/^\s+$/.test(t)) { frag.appendChild(document.createTextNode(t)); return; }
+          const s = document.createElement("span");
+          s.className = "szo"; s.style.setProperty("--i", i++); s.textContent = t;
+          frag.appendChild(s);
+        });
+        n.replaceWith(frag);
+      } else if (n.nodeType === 1) bont(n);
+    });
+  };
+  bont(h1);
+})();
+
+// Láthatóvá váláskor egyszer lefutó elemek: táblázat, pipák, lépések, számláló.
+(() => {
+  const elemek = document.querySelectorAll("[data-anim], [data-count]");
+  const indit = (el) => {
+    el.classList.add("fut");
+    if (el.dataset.count && !csendes) {
+      const cel = +el.dataset.count, t0 = performance.now(), hossz = 900;
+      const lep = (t) => {
+        const x = Math.min(1, (t - t0) / hossz);
+        el.textContent = Math.round(cel * (1 - Math.pow(1 - x, 3)));
+        if (x < 1) requestAnimationFrame(lep);
+      };
+      requestAnimationFrame(lep);
+    }
+  };
+  if (!("IntersectionObserver" in window)) { elemek.forEach(indit); return; }
+  const io = new IntersectionObserver((es) => es.forEach(e => {
+    if (e.isIntersecting) { indit(e.target); io.unobserve(e.target); }
+  }), { threshold: 0.35 });
+  elemek.forEach(e => io.observe(e));
+})();
+
+// Menüsor: görgetés után halvány árnyék (őrszem-elemmel, scroll-figyelő nélkül).
+(() => {
+  const nav = document.querySelector(".nav");
+  if (!nav || !("IntersectionObserver" in window)) return;
+  const or = document.createElement("div");
+  or.style.cssText = "position:absolute;top:0;left:0;width:1px;height:8px;pointer-events:none";
+  document.body.prepend(or);
+  new IntersectionObserver(([e]) => nav.classList.toggle("lent", !e.isIntersecting)).observe(or);
+})();
+
+
 // Reveal on scroll (IntersectionObserver, no scroll listeners).
 (() => {
   const els = document.querySelectorAll(".reveal");
