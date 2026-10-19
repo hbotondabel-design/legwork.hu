@@ -75,4 +75,7 @@ document.documentElement.classList.add("js");
   document.querySelectorAll("main > section[id], main > section.hero").forEach(el => io.observe(el));
 })();
 
+// A fordítva tárolt postai cím képernyőolvasóknak is helyes sorrendben (a forrásban nincs olvasható alakban).
+document.querySelectorAll(".cim").forEach(e => e.setAttribute("aria-label", [...e.textContent].reverse().join("")));
+
 document.querySelectorAll("[data-year]").forEach(e => { e.textContent = new Date().getFullYear(); });
